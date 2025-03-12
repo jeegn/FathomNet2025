@@ -1,3 +1,7 @@
 dataset_test/
 dataset_train/
 logs/
+slurm_logs/
+*.pyc
+
+

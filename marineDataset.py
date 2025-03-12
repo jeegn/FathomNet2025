@@ -41,3 +41,33 @@ class MarineSpeciesDataset(Dataset):
             image = self.transform(image)
 
         return image, label_idx
+
+
+if __name__ == "__main__":
+    # Set the correct path to your annotations CSV file
+    csv_path = "/scratch/scholar/jdani/fathomNetData/annotations.csv"  # Update this path if necessary
+    data_path = "/scratch/scholar/jdani/fathomNetData/roi"  # Update this path if necessary
+
+    # Initialize the database
+    database = MarineSpeciesDataset(csv_path, data_path)
+
+    # Display histogram
+    import matplotlib.pyplot as plt
+    from collections import Counter
+
+    # Save histogram to a file
+    histogram_path = "marine_species_distribution.png"
+    label_counts = Counter(database.annotations["label"])
+    labels, counts = zip(*label_counts.items())
+    
+    print(len(database.classes))
+    plt.figure(figsize=(12, 6))
+    plt.barh(labels, counts)
+    plt.xlabel("Number of Images")
+    plt.ylabel("Species")
+    plt.title("Distribution of Marine Species in Dataset")
+    plt.gca().invert_yaxis()  # Invert y-axis for better readability
+    
+    plt.savefig(histogram_path, bbox_inches="tight")
+
+    print(f"Histogram saved at: {histogram_path}")
